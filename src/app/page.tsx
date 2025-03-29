@@ -1,9 +1,76 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import CountryList from "../components/CountryList";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(false);
   const [search, setSearch] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
+  const countries = [
+    {
+      cca3: "USA",
+      name: { common: "United States" },
+      flags: { png: "https://flagcdn.com/w320/us.png" },
+      region: "Americas",
+      subregion: "Northern America",
+      capital: ["Washington D.C."],
+      population: 331002651,
+      area: 9833517,
+      languages: { eng: "English" },
+      currencies: { USD: { name: "United States Dollar" } },
+    },
+    {
+      cca3: "FRA",
+      name: { common: "France" },
+      flags: { png: "https://flagcdn.com/w320/fr.png" },
+      region: "Europe",
+      subregion: "Western Europe",
+      capital: ["Paris"],
+      population: 67081000,
+      area: 551695,
+      languages: { fra: "French" },
+      currencies: { EUR: { name: "Euro" } },
+    },
+    {
+      cca3: "JPN",
+      name: { common: "Japan" },
+      flags: { png: "https://flagcdn.com/w320/jp.png" },
+      region: "Asia",
+      subregion: "East Asia",
+      capital: ["Tokyo"],
+      population: 125960000,
+      area: 377975,
+      languages: { jpn: "Japanese" },
+      currencies: { JPY: { name: "Japanese Yen" } },
+    },
+    {
+      cca3: "IND",
+      name: { common: "India" },
+      flags: { png: "https://flagcdn.com/w320/in.png" },
+      region: "Asia",
+      subregion: "South Asia",
+      capital: ["New Delhi"],
+      population: 1393409038,
+      area: 3287263,
+      languages: { hin: "Hindi", eng: "English" },
+      currencies: { INR: { name: "Indian Rupee" } },
+    },
+    {
+      cca3: "BRA",
+      name: { common: "Brazil" },
+      flags: { png: "https://flagcdn.com/w320/br.png" },
+      region: "Americas",
+      subregion: "South America",
+      capital: ["Brasília"],
+      population: 212559417,
+      area: 8515767,
+      languages: { por: "Portuguese" },
+      currencies: { BRL: { name: "Brazilian Real" } },
+    },
+  ];
 
   return (
     <div
@@ -22,6 +89,7 @@ export default function Home() {
             className="p-3 border rounded-lg w-full sm:w-80 bg-white text-black dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={(e) => {
               setSearch(e.target.value);
+              setCurrentPage(1);
             }}
           />
           <button
@@ -62,6 +130,13 @@ export default function Home() {
           </button>
         </div>
       </header>
+      <CountryList
+        countries={countries}
+        search={search}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }
