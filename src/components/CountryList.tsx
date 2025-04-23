@@ -1,6 +1,7 @@
 "use client";
 import { useMemo } from "react";
 import CountryCard from "./CountryCard";
+import Pagination from "./Pagination";
 
 interface CountryListProps {
   countries: any[];
@@ -25,11 +26,21 @@ const CountryList = ({
     [countries, search]
   );
 
+  const totalPages = Math.ceil(filteredCountries.length / itemsPerPage);
+  const paginatedCountries = useMemo(
+    () =>
+      filteredCountries.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      ),
+    [filteredCountries, currentPage, itemsPerPage]
+  );
+
   return (
     <div className="container mx-auto p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredCountries.length > 0 ? (
-          filteredCountries.map((country) => (
+        {paginatedCountries.length > 0 ? (
+          paginatedCountries.map((country) => (
             <CountryCard key={country.cca3} country={country} />
           ))
         ) : (
@@ -38,6 +49,14 @@ const CountryList = ({
           </p>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </div>
   );
 };
